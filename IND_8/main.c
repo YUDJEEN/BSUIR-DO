@@ -44,7 +44,7 @@ void menu() {
 	switch (menuChosenItem) {
 	case 1: addStudent(student, totalStudents);  break;
     case 2: editStudent(student, totalStudents); break;
-    case 3: displayStudents(student);            break;
+    case 3: displayStudents(student, totalStudents);            break;
     case 4: displayTask(student, totalStudents); break;
     case 0: exit(0);                             break;
 	default:
@@ -243,10 +243,9 @@ void editMarks(student *student, int ID, int totalStudents) {
     }    
 }
 
-void displayStudents(student *student) {
+void displayStudents(student *student, int totalStudents) {
 	FILE* FILE_STUDENTS;
 	FILE_STUDENTS = fopen("students_list.txt", "r");				
-    int totalStudents = countAllStudents();
 	int i = 0;
 	while (fscanf(FILE_STUDENTS, "%s %s %d %f %f %f %f %f %s", 
                                                             student[i].name, 
