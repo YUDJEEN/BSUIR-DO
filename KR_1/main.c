@@ -183,7 +183,7 @@ void menuDisplayStudents() {
 	size_t valueOfAllStudents = countAllStudents();
 	student* STUDENTS = malloc(valueOfAllStudents * sizeof(*STUDENTS));
 
-	printf("\n==================================== STUDENTS ====================================\n");
+	printf("\n==================================== STUDENTS ===================================\n");
 	int i = 0;
 	while (fscanf(FILE_STUDENTS, "%s %s %d",
 										(STUDENTS + i)->name,
@@ -197,8 +197,8 @@ void menuDisplayStudents() {
 																												(STUDENTS + i)->roomNumber);
 		i++;
 	}
-	printf("\n==================================================================================\n");
-
+	printf("\n=================================================================================\n");
+ 
 	fclose(FILE_STUDENTS);
 	free(STUDENTS);
 }
