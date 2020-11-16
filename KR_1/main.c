@@ -199,6 +199,7 @@ void menuDisplayStudents() {
 	}
 	printf("\n=================================================================================\n");
  
+ 
 	fclose(FILE_STUDENTS);
 	free(STUDENTS);
 }
