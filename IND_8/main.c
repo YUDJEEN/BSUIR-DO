@@ -13,7 +13,6 @@ typedef struct {
     float chemistry;
     float computerScience;
     float average;
-    char  isTask     [256];
 } student;
 
 // ================================== //
@@ -37,6 +36,7 @@ void main() {
 
 void menu() {
     student student[1024];
+    scanFile(student);
     int totalStudents = countAllStudents();
 	printf("\n1. Add student\n2. Edit student\n3. Display students\n4. Display task\n0. Exit\n");
 	int menuChosenItem;
@@ -68,15 +68,14 @@ void rewriteFile(int totalStudents, student *student) {
     FILE* FILE_STUDENTS;
 	FILE_STUDENTS = fopen("students_list.txt", "w");
 	for (int i = 0; i < totalStudents; i++) {
-		fprintf(FILE_STUDENTS, "%s %s %d %.1f %.1f %.1f %.1f %.1f %s\n", student[i].name,
+		fprintf(FILE_STUDENTS, "%s %s %d %.1f %.1f %.1f %.1f %.1f\n", student[i].name,
 			  					                                         student[i].birthDate,
 			   						                                     student[i].group,
                                                                          student[i].physics,
                                                                          student[i].math,
                                                                          student[i].chemistry,
                                                                          student[i].computerScience,
-                                                                         student[i].average,
-                                                                         student[i].isTask);
+                                                                         student[i].average);
 	}
 
     fclose(FILE_STUDENTS);
@@ -86,15 +85,14 @@ void scanFile(student *student) {
     FILE* FILE_STUDENTS;
 	FILE_STUDENTS = fopen("students_list.txt", "r");
 	int i = 0;
-	while (fscanf(FILE_STUDENTS, "%s %s %d %f %f %f %f %f %s",  student[i].name, 
+	while (fscanf(FILE_STUDENTS, "%s %s %d %f %f %f %f %f",  student[i].name, 
                                                                 student[i].birthDate, 
                                                                 &student[i].group, 
                                                                 &student[i].physics, 
                                                                 &student[i].math, 
                                                                 &student[i].chemistry, 
                                                                 &student[i].computerScience, 
-                                                                &student[i].average,
-                                                                student[i].isTask) != EOF ){
+                                                                &student[i].average) != EOF ){
 		i++;
 	}
     fclose(FILE_STUDENTS);
@@ -118,20 +116,14 @@ void addStudent(student *student, int totalStudents) {
     printf("\nComputer science mark: ");
     scanf("%f", &student->computerScience);
     student->average = (student->physics + student->math + student->chemistry + student->computerScience) / 4;
-    if (student->math > 7 && student->physics > 7 && student->chemistry > 7 && student->computerScience > 7) {
-        strcpy(student->isTask, "TASK");
-    } else {
-        strcpy(student->isTask, "NONTASK");
-    }
-    fprintf(FILE_STUDENTS, "%s %s %d %.1f %.1f %.1f %.1f %.1f %s\n", student->name,
+    fprintf(FILE_STUDENTS, "%s %s %d %.1f %.1f %.1f %.1f %.1f\n", student->name,
                                                                      student->birthDate,
                                                                      student->group,
                                                                      student->physics,
                                                                      student->math,
                                                                      student->chemistry,
                                                                      student->computerScience,
-                                                                     student->average,
-                                                                     student->isTask);
+                                                                     student->average);
     fclose(FILE_STUDENTS);
 }
 
@@ -191,11 +183,7 @@ void editMarks(student *student, int ID, int totalStudents) {
 	    scanf("%f", &newPhysicsMark);
         student[ID].physics = newPhysicsMark;
         student[ID].average = (student[ID].physics + student[ID].math + student[ID].chemistry + student[ID].computerScience) / 4;
-        if (student[ID].math > 7 && student[ID].physics > 7 && student[ID].chemistry > 7 && student[ID].computerScience > 7) {
-            strcpy(student[ID].isTask, "TASK");
-        } else {
-            strcpy(student[ID].isTask, "NONTASK");
-        }
+
         rewriteFile(totalStudents, student);         
         break;
     case 2:
@@ -204,11 +192,6 @@ void editMarks(student *student, int ID, int totalStudents) {
 	    scanf("%f", &newMathMark);
         student[ID].math = newMathMark;
         student[ID].average = (student[ID].physics + student[ID].math + student[ID].chemistry + student[ID].computerScience) / 4;
-        if (student[ID].math > 7 && student[ID].physics > 7 && student[ID].chemistry > 7 && student[ID].computerScience > 7) {
-            strcpy(student[ID].isTask, "TASK");
-        } else {
-            strcpy(student[ID].isTask, "NONTASK");
-        }
         rewriteFile(totalStudents, student);         
         break;        
     case 3:
@@ -217,11 +200,6 @@ void editMarks(student *student, int ID, int totalStudents) {
 	    scanf("%f", &newChemistryMark);
         student[ID].chemistry = newChemistryMark;
         student[ID].average = (student[ID].physics + student[ID].math + student[ID].chemistry + student[ID].computerScience) / 4;
-        if (student[ID].math > 7 && student[ID].physics > 7 && student[ID].chemistry > 7 && student[ID].computerScience > 7) {
-            strcpy(student[ID].isTask, "TASK");
-        } else {
-            strcpy(student[ID].isTask, "NONTASK");
-        }
         rewriteFile(totalStudents, student);                 
         break;
     case 4:
@@ -230,11 +208,6 @@ void editMarks(student *student, int ID, int totalStudents) {
 	    scanf("%f", &newCSMark);
         student[ID].computerScience = newCSMark;
         student[ID].average = (student[ID].physics + student[ID].math + student[ID].chemistry + student[ID].computerScience) / 4;
-        if (student[ID].math > 7 && student[ID].physics > 7 && student[ID].chemistry > 7 && student[ID].computerScience > 7) {
-            strcpy(student[ID].isTask, "TASK");
-        } else {
-            strcpy(student[ID].isTask, "NONTASK");
-        }
         rewriteFile(totalStudents, student);         
         break;        
     default:
@@ -247,7 +220,7 @@ void displayStudents(student *student, int totalStudents) {
 	FILE* FILE_STUDENTS;
 	FILE_STUDENTS = fopen("students_list.txt", "r");				
 	int i = 0;
-	while (fscanf(FILE_STUDENTS, "%s %s %d %f %f %f %f %f %s", 
+	while (fscanf(FILE_STUDENTS, "%s %s %d %f %f %f %f %f", 
                                                             student[i].name, 
                                                             student[i].birthDate, 
                                                             &student[i].group, 
@@ -255,8 +228,7 @@ void displayStudents(student *student, int totalStudents) {
                                                             &student[i].math, 
                                                             &student[i].chemistry, 
                                                             &student[i].computerScience, 
-                                                            &student[i].average,
-                                                            student[i].isTask) != EOF ){
+                                                            &student[i].average) != EOF ){
         printf("\n\nStudent ID: %d\nStudent name: %s\nStudent birth date: %s\nStudent group: %d\nStudent marks:\nPhysics: %.1f\nMath: %.1f\nChemistry: %.1f\nComputer Science: %.1f\nAverage: %.1f\n\n",
         i + 1,
                                                             student[i].name,
@@ -267,9 +239,6 @@ void displayStudents(student *student, int totalStudents) {
                                                             student[i].chemistry,
                                                             student[i].computerScience,
                                                             student[i].average);
-        if (student[i].math > 7 && student[i].physics > 7 && student[i].chemistry > 7 && student[i].computerScience > 7) {
-            printf("Student with ID %d passed exams with marks 8,9 or 10\n\n", i+1);
-        }
 		i++;
 	}
 
@@ -277,10 +246,28 @@ void displayStudents(student *student, int totalStudents) {
 }
 
 void displayTask(student *student, int totalStudents) {
-    scanFile(student);
-    for (int i = 0; i < totalStudents; i++) {
-        if (student[i].math > 7 && student[i].physics > 7 && student[i].chemistry > 7 && student[i].computerScience > 7) {
-            printf("Student with ID %d passed exams with mark 8,9 or 10\n", i+1);
+    printf("Input first letter of student to find: ");
+    char scanString[24];
+    scanf("%s", scanString);
+    char firstLetter = scanString[0];              // dont mind this, just regular c
+
+    printf("Students with average mark > 8: \n");
+
+    for (size_t i = 0; i < totalStudents; i++){
+        if (student[i].name[0] == firstLetter) {
+            if (student[i].math > 7 && student[i].physics > 7 && student[i].chemistry > 7 && student[i].computerScience > 7) {
+            printf("\n\nStudent ID: %d\nStudent name: %s\nStudent birth date: %s\nStudent group: %d\nStudent marks:\nPhysics: %.1f\nMath: %.1f\nChemistry: %.1f\nComputer Science: %.1f\nAverage: %.1f\n",
+                                                            i + 1,
+                                                            student[i].name,
+                                                            student[i].birthDate,
+                                                            student[i].group,
+                                                            student[i].physics,
+                                                            student[i].math,
+                                                            student[i].chemistry,
+                                                            student[i].computerScience,
+                                                            student[i].average);
+            }
         }
     }
 }
+    
