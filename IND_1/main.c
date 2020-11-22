@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <math.h>
 
-int main (){
+void main (){
  
     int a;
     double z;
@@ -17,5 +17,4 @@ int main (){
     z = (1. - ((sin(2.5*M_PI - 8*a))))/4.;
     printf("Result: z2 = %5.5lf \n" , z);
  
-    return 0;
 }
